@@ -12,6 +12,6 @@ Note : The files india_metadata.tsv, group1.tsv, group2.tsv, and group3.tsv are 
 - Standardizes location, age, and gender values for consistency.
 - Joins metadata with mutation data(VCF).
 - Identifies mutations present in at least 5 samples.
-- Segregates data by age groups (0-17, 18-64, 65-100 years).
+- Segregates data by age groups (0-17, 18-64, 65+).
 - Performs random sub-sampling to balance sample sizes across age groups.
 
