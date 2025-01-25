@@ -239,6 +239,9 @@ if (adjusted_p_values[3] < alpha) {
 }
 
 
+# Friedma - Test
+                       
+friedman.test(Mutation_Frequency ~ Vaccination_Status | Age_Group, data = data)
 
 
 
