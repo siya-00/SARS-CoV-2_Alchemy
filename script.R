@@ -162,8 +162,84 @@ random_sample_ids_group3 <- sample(group3_sample_ids, 23325, replace = FALSE)
 subsample_0_17 <- subset(subset_0_17, SAMPLE_ID %in% random_sample_ids_group1)
 subsample_18_64 <- subset(subset_18_64, SAMPLE_ID %in% random_sample_ids_group2)
 subsample_65_100 <- subset(subset_65_100, SAMPLE_ID %in% random_sample_ids_group3)
-
-
 subset_combined_data <- rbind(subsample_0_17, subsample_18_64, subsample_65_100)
+
+
+
+### chi-squre test
+                       
+# Create a contingency table
+contingency_table <- matrix(c(group1_unique_count, group2_unique_count, group3_unique_count), 
+                            nrow = 1, 
+                            byrow = TRUE)
+
+# Print the contingency table
+print(contingency_table)
+
+
+
+chi_squared_test <- chisq.test(contingency_table)
+
+# Print the results
+print(chi_squared_test)
+
+# Interpret the p-value
+alpha <- 0.05
+if (chi_squared_test$p.value < alpha) {
+  print("There is a significant difference in the number of unique mutations between the groups.")
+} else {
+  print("There is no significant difference in the number of unique mutations between the groups.")
+}
+
+
+##>>>>>>>> Pair-wise chi-squre test
+
+# Create contingency tables for pairwise comparisons
+contingency_table_1_2 <- matrix(c(group1_unique_count, group2_unique_count), 
+                                nrow = 1, byrow = TRUE)
+contingency_table_2_3 <- matrix(c(group2_unique_count, group3_unique_count), 
+                                nrow = 1, byrow = TRUE)
+contingency_table_1_3 <- matrix(c(group1_unique_count, group3_unique_count), 
+                                nrow = 1, byrow = TRUE)
+
+# Perform Chi-squared tests
+chi_squared_test_1_2 <- chisq.test(contingency_table_1_2)
+chi_squared_test_2_3 <- chisq.test(contingency_table_2_3)
+chi_squared_test_1_3 <- chisq.test(contingency_table_1_3)
+
+# Print results
+print(chi_squared_test_1_2)
+print(chi_squared_test_2_3)
+print(chi_squared_test_1_3)
+
+# Adjust p-values using Bonferroni correction
+p_values <- c(chi_squared_test_1_2$p.value, chi_squared_test_2_3$p.value, chi_squared_test_1_3$p.value)
+adjusted_p_values <- p.adjust(p_values, method = "bonferroni")
+
+print(adjusted_p_values)
+
+# Interpret the results
+alpha <- 0.05
+if (adjusted_p_values[1] < alpha) {
+  print("Group 2 has a significantly higher number of unique mutations compared to Group 1.")
+} else {
+  print("No significant difference between Group 2 and Group 1.")
+}
+
+if (adjusted_p_values[2] < alpha) {
+  print("Group 2 has a significantly higher number of unique mutations compared to Group 3.")
+} else {
+  print("No significant difference between Group 2 and Group 3.")
+}
+
+if (adjusted_p_values[3] < alpha) {
+  print("Group 3 has a significantly higher number of unique mutations compared to Group 1.")
+} else {
+  print("No significant difference between Group 3 and Group 1.")
+}
+
+
+
+
 
 
